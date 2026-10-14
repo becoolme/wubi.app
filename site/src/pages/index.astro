@@ -34,6 +34,9 @@ import { site } from '../site';
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {site.analytics.domain && site.analytics.src && (
+      <script is:inline defer data-domain={site.analytics.domain} src={site.analytics.src}></script>
+    )}
   </head>
   <body>
     <Header />

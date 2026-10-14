@@ -11,4 +11,9 @@ export const site = {
   downloadSize: '[安装包大小待定]',
   pricing: '[定价或免费说明待定]',
   contact: '[联系邮箱待定]',
+  /** Plausible analytics; production sets these in .env.production. */
+  analytics: {
+    domain: import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN,
+    src: import.meta.env.PUBLIC_PLAUSIBLE_SRC,
+  },
 };

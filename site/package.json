@@ -9,9 +9,13 @@
     "prebuild": "npm run table",
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "astro": "^7.3.8"
+  },
+  "devDependencies": {
+    "wrangler": "^4.150.0"
   }
 }

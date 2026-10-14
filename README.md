@@ -99,6 +99,14 @@ npm --prefix site install
 npm --prefix site run dev
 ```
 
+官网的统计用 Plausible，生产构建从 `site/.env.production` 读取 `PUBLIC_PLAUSIBLE_DOMAIN`（站点名）和 `PUBLIC_PLAUSIBLE_SRC`（脚本地址），两项有一项为空就不加统计脚本。
+
+部署到 Cloudflare（Workers 静态资源，绑定 wubi.app）：
+
+```bash
+npm --prefix site run deploy
+```
+
 `site/src/ime/` 是输入逻辑的 TypeScript 移植，供页面上的试打区使用。它没有拼音、调频和设置，码表也去掉了浏览器通常显示不了的扩展区汉字。
 
 ## 许可

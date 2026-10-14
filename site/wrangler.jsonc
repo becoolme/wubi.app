@@ -1,0 +1,9 @@
+// The site is static: Cloudflare serves the built files in dist/ at wubi.app.
+{
+  "name": "wubi-app",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./dist" },
+  // Also at wubi-app.<account>.workers.dev, which works before the domain does.
+  "workers_dev": true,
+  "routes": [{ "pattern": "wubi.app", "custom_domain": true }]
+}
