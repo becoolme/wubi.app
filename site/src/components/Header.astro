@@ -31,4 +31,8 @@ const links = [
   nav { display: flex; flex-wrap: wrap; align-items: center; gap: 0 28px; font-size: 15px; }
   nav a { min-height: 44px; display: flex; align-items: center; }
   .cta { padding: 0 18px; border-radius: 10px; background: var(--ink); color: #fff; font-weight: 500; }
+  @media (max-width: 640px) {
+    .bar { flex-wrap: nowrap; }
+    nav a:not(.cta) { display: none; }
+  }
 </style>
