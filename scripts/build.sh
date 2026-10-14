@@ -1,5 +1,6 @@
 #!/bin/bash
-# Builds build/Mobi.app (末笔), ad-hoc signed.
+# Builds build/Mobi.app (末笔). Signed ad hoc unless SIGN_IDENTITY names a certificate,
+# e.g. SIGN_IDENTITY="Developer ID Application: …", which also turns on the hardened runtime.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -19,5 +20,10 @@ swift scripts/make_icons.swift "$tmp"
 iconutil -c icns "$tmp/AppIcon.iconset" -o "$app/Contents/Resources/AppIcon.icns"
 cp "$tmp/MenuIcon.pdf" "$app/Contents/Resources/"
 
-codesign --force --sign - "$app"
+identity="${SIGN_IDENTITY:--}"
+if [ "$identity" = "-" ]; then
+    codesign --force --sign - "$app"
+else
+    codesign --force --options runtime --timestamp --sign "$identity" "$app"
+fi
 echo "Built $app"

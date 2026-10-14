@@ -33,6 +33,10 @@
 
 ## 安装
 
+从 [Releases](https://github.com/becoolme/wubi.app/releases) 下载 `Mobi-<版本>.dmg`，打开后把「末笔」拖到旁边的「输入法」文件夹上（会要求输入电脑密码）。然后到 系统设置 → 键盘 → 文字输入 → 输入法 → 编辑… → ＋ → 简体中文，添加「末笔」。列表里没有的话，注销再登录一次。
+
+### 从源码构建
+
 需要 macOS 13 或更高版本，以及 Xcode 命令行工具（Swift 5.9 以上）。
 
 ```bash
@@ -70,6 +74,20 @@ scripts            构建、安装、图标与码表转换脚本
 vendor/rime-wubi   码表来源及其许可证
 site               官网（Astro）
 ```
+
+### 发布
+
+`scripts/release.sh` 用 Developer ID 签名、打包成 `build/Mobi-<版本>.dmg`，再交给 Apple 公证。公证凭据只需保存一次：
+
+```bash
+xcrun notarytool store-credentials mobi-notary --apple-id <Apple ID> --team-id 7U5UR46DGH
+```
+
+```bash
+./scripts/release.sh
+```
+
+版本号在 `Resources/Info.plist`，官网的版本号在 `site/src/site.ts`，两处要一起改。
 
 运行测试：
 
