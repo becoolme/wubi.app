@@ -127,6 +127,10 @@ npm --prefix site run deploy
 
 `site/src/ime/` 是输入逻辑的 TypeScript 移植，供页面上的试打区使用。它没有拼音、调频和设置，码表也去掉了浏览器通常显示不了的扩展区汉字。
 
+## 联系
+
+问题和建议可以开 [Issue](https://github.com/becoolme/wubi.app/issues)，也可以写信到 <hi@wubi.app>。
+
 ## 许可
 
 代码以 [MIT](LICENSE) 许可发布。

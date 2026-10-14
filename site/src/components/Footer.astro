@@ -6,7 +6,7 @@ import { site } from '../site';
     <span>{site.name} · {site.domain}</span>
     <span>五笔 86 码表来自 rime-wubi，以 LGPL-3.0 许可使用</span>
     <a href={site.repo}>GitHub</a>
-    <span>{site.contact}</span>
+    <a href={`mailto:${site.contact}`}>{site.contact}</a>
   </div>
 </footer>
 

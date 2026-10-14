@@ -14,7 +14,7 @@ export const site = {
   requires: '需要 macOS 13 或更高版本',
   downloadSize: '约 1.5 MB',
   pricing: '[定价或免费说明待定]',
-  contact: '[联系邮箱待定]',
+  contact: 'hi@wubi.app',
   /** Plausible analytics; production sets these in .env.production. */
   analytics: {
     domain: import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN,
