@@ -273,6 +273,30 @@ final class FeatureTests: XCTestCase {
         XCTAssertEqual(session.buffer, "w")
     }
 
+    func testRareCharactersYieldToHints() {
+        let table = CodeTable(text: "yiy 䚱 𧦋\nyiyy 应该 100\nyiyj 哀鸿遍野 10\nyny 房 訫\nynyy 房子")
+        XCTAssertEqual(table.candidates(for: "yiy").map(\.word), ["应该", "哀鸿遍野", "䚱", "𧦋"])
+        XCTAssertEqual(table.candidates(for: "yny").map(\.word), ["房", "房子", "訫"])
+        XCTAssertEqual(table.candidates(for: "yiy", completions: false).map(\.word), ["䚱", "𧦋"])
+        table.addUserWords(text: "yiy 䚱")
+        XCTAssertEqual(table.candidates(for: "yiy").first?.word, "䚱")
+        XCTAssertFalse(CodeTable.isRare("見"))
+        XCTAssertFalse(CodeTable.isRare("应该"))
+        XCTAssertTrue(CodeTable.isRare("哀𧦋"))
+    }
+
+    func testRareCharactersOpenThePageAfterHints() {
+        let table = CodeTable(text: "yiy 䚱\nyiya 应 9\nyiyb 该 8\nyiyc 就 7\nyiyd 说 6\nyiye 让 5\nyiyf 读 4\nyny 房 訫")
+        let s = Session(table: table)
+        for ch in "yiy" { _ = s.handle(.letter(ch)) }
+        XCTAssertEqual(s.pageCandidates.map(\.word), ["应", "该", "就", "说", "让"])
+        _ = s.handle(.pageDown)
+        XCTAssertEqual(s.pageCandidates.map(\.word), ["䚱", "读"])
+        s.reset()
+        for ch in "yny" { _ = s.handle(.letter(ch)) }
+        XCTAssertEqual(s.pageCandidates.map(\.word), ["房", "訫"])
+    }
+
     func testUserWordsComeFirst() {
         let table = CodeTable(text: "khlg 中国 跨国\nrcq 反")
         table.addUserWords(text: "# mine\nrcql 反链\nkhlg 跑车 跨国")

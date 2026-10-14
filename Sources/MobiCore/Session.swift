@@ -316,6 +316,19 @@ public final class Session {
         } else {
             all = table.candidates(for: value, completions: options.completions, usage: usage, adaptExact: options.adaptExact)
             if isMixed, let pinyin { mix(pinyin, value) }
+            liftRare(value)
         }
+    }
+
+    /// The table puts rare characters that match the code after every completion. Bring them
+    /// up to the start of the second page, so they are a page turn away rather than many.
+    private func liftRare(_ value: String) {
+        guard let first = all.firstIndex(where: { $0.code != value }) else { return }
+        let rare = all[first...].filter { $0.code == value }
+        guard !rare.isEmpty else { return }
+        var rest = Array(all[..<first]) + all[first...].filter { $0.code != value }
+        let at = min(rest.count, max(max(1, options.pageSize), byPinyin.upperBound))
+        rest.insert(contentsOf: rare, at: at)
+        all = rest
     }
 }

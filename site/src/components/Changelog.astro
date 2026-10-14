@@ -1,0 +1,36 @@
+---
+import { changelog } from '../changelog';
+---
+<section id="changelog" class="ruled">
+  <div class="wrap sec log">
+    <div class="head">
+      <div class="eyebrow">08 更新记录</div>
+      <h2 class="h2">更新记录</h2>
+    </div>
+    <ol class="list">
+      {changelog.map((release) => (
+        <li class="release">
+          <div class="meta">
+            <span class="ver">{release.version}</span>
+            <time datetime={release.date}>{release.date}</time>
+          </div>
+          <ul>{release.changes.map((change) => <li>{change}</li>)}</ul>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .log { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 64px; }
+  .head { margin-bottom: 0; }
+  .list { min-width: 0; margin: 0; padding: 0; list-style: none; }
+  .release { padding: 24px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 6px 24px; }
+  .release:last-child { border-bottom: 1px solid var(--line); }
+  .meta { display: flex; flex-direction: column; gap: 2px; }
+  .ver { font-size: 18px; font-weight: 700; }
+  time { font-family: var(--mono); font-size: 13px; color: var(--sub); }
+  ul { margin: 0; padding-left: 1.2em; list-style: disc; color: var(--sub); display: flex; flex-direction: column; gap: 6px; }
+  @media (max-width: 860px) { .log { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+  @media (max-width: 480px) { .release { grid-template-columns: minmax(0, 1fr); } .meta { flex-direction: row; align-items: baseline; gap: 12px; } }
+</style>

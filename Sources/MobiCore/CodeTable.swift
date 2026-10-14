@@ -24,6 +24,9 @@ public final class CodeTable {
     private let keep: ((String) -> Bool)?
     /// User words the table already had under the same code; removing those must not drop them.
     private var shadowed: Set<String> = []
+    /// Words the user added, as `code word`. These are never treated as rare.
+    private var userWords: Set<String> = []
+    private var rareCache: [String: Bool] = [:]
 
     /// `keep` can turn words away, e.g. those the system has no font to draw.
     public init(text: String, keep: ((String) -> Bool)? = nil) {
@@ -65,6 +68,7 @@ public final class CodeTable {
         let user = CodeTable(text: text)
         for (code, entries) in user.exact {
             let words = Set(entries.map(\.word))
+            for word in words { userWords.insert("\(code) \(word)") }
             for entry in exact[code] ?? [] where words.contains(entry.word) {
                 shadowed.insert("\(code) \(entry.word)")
             }
@@ -75,6 +79,7 @@ public final class CodeTable {
 
     /// Takes back a word added with `addUserWords`. A word the table had anyway stays.
     public func removeUserWord(_ word: String, code: String) {
+        userWords.remove("\(code) \(word)")
         guard !shadowed.contains("\(code) \(word)"), var entries = exact[code] else { return }
         entries.removeAll { $0.word == word }
         exact[code] = entries.isEmpty ? nil : entries
@@ -87,6 +92,26 @@ public final class CodeTable {
 
     private static func isNumber(_ s: Substring) -> Bool {
         !s.isEmpty && s.utf8.allSatisfy { $0 >= 48 && $0 <= 57 }
+    }
+
+    /// A word with a character in neither GB2312 nor Big5: extension-block ideographs,
+    /// Japanese forms and the like, which almost nobody means to type.
+    public static func isRare(_ word: String) -> Bool {
+        word.contains { ch in
+            let s = String(ch)
+            return !s.canBeConverted(to: gb2312) && !s.canBeConverted(to: big5)
+        }
+    }
+
+    private static let gb2312 = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.EUC_CN.rawValue)))
+    private static let big5 = String.Encoding(rawValue: CFStringConvertEncodingToNSStringEncoding(CFStringEncoding(CFStringEncodings.big5.rawValue)))
+
+    private func isRare(_ word: String, code: String) -> Bool {
+        if userWords.contains("\(code) \(word)") { return false }
+        if let known = rareCache[word] { return known }
+        let rare = CodeTable.isRare(word)
+        rareCache[word] = rare
+        return rare
     }
 
     /// Every entry, in no particular order.
@@ -104,8 +129,9 @@ public final class CodeTable {
     /// Exact matches first, then code hints: words whose code starts with `input`.
     ///
     /// Exact matches keep the table's order unless `adaptExact` is set, in which case the ones
-    /// picked more often move forward. Hints are ordered by how often they were picked, then
-    /// shortest code, then the table's weight.
+    /// picked more often move forward. Rare ones (see `isRare`) go after the hints, so a code
+    /// typed short still offers the common word first. Hints are ordered by how often they
+    /// were picked, then shortest code, then the table's weight.
     public func candidates(for input: String, completions: Bool = true, completionLimit: Int = 40,
                            usage: UsageStore? = nil, adaptExact: Bool = false) -> [Candidate] {
         guard !input.isEmpty else { return [] }
@@ -114,8 +140,10 @@ public final class CodeTable {
             let ranked = words.enumerated().map { (offset: $0.offset, word: $0.element, count: usage.count(word: $0.element, code: input)) }
             words = ranked.sorted { $0.count != $1.count ? $0.count > $1.count : $0.offset < $1.offset }.map(\.word)
         }
-        var result = words.map { Candidate(word: $0, code: input) }
-        guard completions else { return result }
+        let rare = words.filter { isRare($0, code: input) }
+        var result = words.filter { !rare.contains($0) }.map { Candidate(word: $0, code: input) }
+        let tail = rare.map { Candidate(word: $0, code: input) }
+        guard completions else { return result + tail }
 
         var lo = 0
         var hi = codes.count
@@ -147,6 +175,6 @@ public final class CodeTable {
             added += 1
             if added >= completionLimit { break }
         }
-        return result
+        return result + tail
     }
 }
