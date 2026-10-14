@@ -1,0 +1,49 @@
+---
+const rows = [
+  { word: '中', code: 'khk' },
+  { word: '种', code: 'tkhh' },
+  { word: '重', code: 'tgjf' },
+  { word: '钟', code: 'qkhh' },
+  { word: '众', code: 'wwwu' },
+];
+const label = `候选窗：输入 zzhong，候选为 ${rows.map((row) => `${row.word} ${row.code}`).join('、')}`;
+---
+<section id="pinyin" class="grain-light night">
+  <div class="dots">
+    <div class="wrap sec two">
+      <div class="stack">
+        <div class="eyebrow">02 拼音反查</div>
+        <h2 class="h2">拆不出来的字，<br />用拼音查一下</h2>
+        <p class="body">先按 z，再打拼音。候选后面跟着这个字的五笔编码，打出来的同时也就记住了，下次不必再查。</p>
+        <p class="fine">读音由 macOS 自带的汉字注音提供，常用多音字已补全；少数冷门读音可能查不到。</p>
+      </div>
+      <div class="side">
+        <div class="list" role="img" aria-label={label}>
+          <div class="bar"><span class="mono">zzhong</span><span>1 / 9</span></div>
+          {rows.map((row, i) => (
+            <div class:list={['row', { on: i === 0 }]}>
+              <span class="mono">{i + 1}</span><span class="word">{row.word}</span><span class="mono">{row.code}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .night { background-color: var(--night); color: #F5F5F7; }
+  .dots { background-image: radial-gradient(rgba(255, 255, 255, .09) 1px, transparent 1.2px); background-size: 18px 18px; }
+  .eyebrow { color: #E9A99F; }
+  .body { color: #C9CCD3; font-size: 17px; max-width: 30em; }
+  .fine { color: #A9ADB5; font-size: 14px; max-width: 34em; }
+  .side { min-width: 0; display: flex; justify-content: center; }
+  .list { width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 2px; padding: 6px; border-radius: 12px; background: #2C3038; border: 1px solid rgba(255, 255, 255, .18); box-shadow: 0 18px 48px rgba(0, 0, 0, .45); }
+  .bar { display: flex; justify-content: space-between; align-items: center; height: 22px; padding: 0 8px; margin-bottom: 2px; font-size: 11px; color: #A9ADB5; }
+  .bar .mono { font-size: 13px; letter-spacing: 1px; color: #F5F5F7; }
+  .row { height: 36px; padding: 0 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
+  .row .mono { font-size: 12px; color: #A9ADB5; }
+  .row .word { font-size: 19px; flex: 1; }
+  .row.on { background: var(--ac); color: #fff; }
+  .row.on .mono { color: #fff; }
+</style>

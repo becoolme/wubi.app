@@ -1,0 +1,19 @@
+---
+// A horizontal candidate window. `rest` is the part of the code still to be typed.
+interface Props {
+  code?: string;
+  page?: string;
+  items: { word: string; rest?: string }[];
+  flat?: boolean;
+  label?: string;
+}
+const { code, page, items, flat = false, label } = Astro.props;
+---
+<div class:list={['cand', { flat }]} role={label ? 'img' : undefined} aria-label={label}>
+  {code && <div class="bar"><span class="mono">{code}</span><span>{page}</span></div>}
+  <div class="row">
+    {items.map((item, i) => (
+      <span class:list={['it', { on: i === 0 }]}><i>{i + 1}</i>{item.word}{item.rest && <i>{item.rest}</i>}</span>
+    ))}
+  </div>
+</div>

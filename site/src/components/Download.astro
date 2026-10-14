@@ -1,0 +1,24 @@
+---
+import DownloadIcon from './DownloadIcon.astro';
+import { site } from '../site';
+---
+<section id="download" class="grain-light">
+  <!-- The square grid children learn to write characters in. -->
+  <svg class="tian" aria-hidden="true" viewBox="0 0 100 100" fill="none" stroke="#FFFFFF" stroke-opacity=".16" stroke-width=".35" stroke-dasharray="1.6 1.6"><rect x=".5" y=".5" width="99" height="99" stroke-dasharray="none"></rect><path d="M50 0v100M0 50h100M0 0l100 100M100 0L0 100"></path></svg>
+  <div class="wrap inner">
+    <span aria-hidden="true" class="serif icon">末</span>
+    <h2 class="serif">装上，打几行字试试</h2>
+    <a href={site.downloadUrl} class="button"><DownloadIcon />下载末笔 {site.version}</a>
+    <p>{site.requires} · {site.downloadSize}</p>
+  </div>
+</section>
+
+<style>
+  section { position: relative; overflow: hidden; background-color: var(--ac); color: #fff; }
+  .tian { position: absolute; left: 50%; top: 50%; width: 560px; height: 560px; transform: translate(-50%, -50%); pointer-events: none; }
+  .inner { position: relative; padding-top: 96px; padding-bottom: 96px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 22px; }
+  .icon { width: 88px; height: 88px; border-radius: 20px; background: #fff; color: var(--ac); display: flex; align-items: center; justify-content: center; font-size: 52px; line-height: 1; box-shadow: 0 14px 30px rgba(0, 0, 0, .18); }
+  h2 { font-size: clamp(30px, 4.5vw, 46px); line-height: 1.2; }
+  .button { min-height: 54px; padding: 0 32px; border-radius: 12px; background: #fff; color: #1D1D1F; font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+  p { font-size: 14px; }
+</style>

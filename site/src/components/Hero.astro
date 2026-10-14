@@ -1,0 +1,68 @@
+---
+import Candidates from './Candidates.astro';
+import DownloadIcon from './DownloadIcon.astro';
+import { site } from '../site';
+
+const candidates = [
+  { word: '你' },
+  { word: '你是', rest: 'jg' },
+  { word: '你的', rest: 'rq' },
+  { word: '你好', rest: 'vb' },
+  { word: '你们', rest: 'wu' },
+];
+---
+<section class="hero">
+  <div class="gridbg" aria-hidden="true"></div>
+  <div class="wrap two inner">
+    <div class="copy">
+      <div class="eyebrow">五笔 86 · macOS 原生</div>
+      <h1 class="serif">末笔落定，<br />字已上屏。</h1>
+      <p class="intro">{site.description}</p>
+      <div class="actions">
+        <a href="#download" class="button"><DownloadIcon />下载 macOS 版</a>
+        <span class="note">版本 {site.version} · {site.requires}</span>
+      </div>
+    </div>
+
+    <div class="window">
+      <div class="titlebar" aria-hidden="true"><span></span><span></span><span></span></div>
+      <div class="doc">
+        <p class="line">周五的评审我来主持，<span class="mono typed">wq</span><span class="caret" aria-hidden="true"></span></p>
+        <div class="panel">
+          <Candidates code="wq" page="1 / 3" items={candidates} label="候选窗：编码 wq，候选依次为 你、你是、你的、你好、你们" />
+        </div>
+        <p class="caption">候选后面的小字，是还没打完的编码。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: hidden; }
+  .gridbg {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(29, 29, 31, .055) 1px, transparent 1px), linear-gradient(90deg, rgba(29, 29, 31, .055) 1px, transparent 1px);
+    background-size: 40px 40px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 72% 45%, #000 0%, transparent 75%);
+    mask-image: radial-gradient(ellipse 70% 80% at 72% 45%, #000 0%, transparent 75%);
+  }
+  .inner { position: relative; padding-top: 96px; padding-bottom: 96px; }
+  .copy { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  h1 { font-size: clamp(40px, 6vw, 68px); line-height: 1.15; letter-spacing: -1px; }
+  .intro { font-size: 19px; color: var(--sub); max-width: 28em; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 20px; margin-top: 8px; }
+  .button { min-height: 52px; padding: 0 28px; border-radius: 12px; background: var(--ac); color: #fff; font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 10px; }
+  .note { font-size: 14px; color: var(--sub); }
+
+  .window { min-width: 0; border: 1px solid #DCD8CF; border-radius: 16px; background: #fff; box-shadow: 0 1px 0 rgba(255, 255, 255, .8) inset, 0 30px 70px rgba(60, 50, 35, .14); overflow: hidden; }
+  .titlebar { height: 40px; border-bottom: 1px solid #EDEAE3; background: #F7F5F0; display: flex; align-items: center; gap: 8px; padding: 0 16px; }
+  .titlebar span { width: 11px; height: 11px; border-radius: 50%; background: #D9D5CC; }
+  .doc { padding: 32px 28px 36px; min-height: 250px; }
+  .line { font-size: 22px; line-height: 1.9; }
+  .typed { border-bottom: 2px solid #1D1D1F; font-size: 19px; }
+  .caret { display: inline-block; width: 2px; height: 24px; background: var(--ac); vertical-align: -4px; margin-left: 1px; animation: blink 1.1s steps(1) infinite; }
+  .panel { margin-top: 10px; }
+  .caption { margin-top: 18px; font-size: 13px; color: #5C5C61; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+</style>

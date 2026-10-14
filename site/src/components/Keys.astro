@@ -1,0 +1,46 @@
+---
+const columns = [
+  [
+    { does: '上屏第一个候选', keys: ['空格'] },
+    { does: '按序号选字', keys: ['1 – 5'] },
+    { does: '选第二、第三个候选', keys: [';', "'"] },
+    { does: '上一页、下一页', keys: ['-', '='] },
+    { does: '取消输入', keys: ['Esc'] },
+  ],
+  [
+    { does: '把编码按字母上屏', keys: ['回车'] },
+    { does: '切换中文、英文', keys: ['Shift'] },
+    { does: '临时拼音', keys: ['z'] },
+    { does: '快捷输入', keys: ['/'] },
+    { does: '造词（空码或最后一页时）', keys: ['='] },
+  ],
+];
+---
+<section id="keys">
+  <div class="wrap sec">
+    <div class="head">
+      <div class="eyebrow">06 键位</div>
+      <h2 class="h2">键位一览</h2>
+    </div>
+    <div class="two lists">
+      {columns.map((rows) => (
+        <dl>
+          {rows.map((row) => (
+            <div class="row">
+              <dt>{row.does}</dt>
+              <dd>{row.keys.map((key) => <kbd class="key">{key}</kbd>)}</dd>
+            </div>
+          ))}
+        </dl>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lists { gap: 0 72px; align-items: start; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+  .row:last-child { border-bottom: 1px solid var(--line); }
+  dd { display: flex; gap: 6px; }
+  @media (max-width: 860px) { dl:first-child .row:last-child { border-bottom: 0; } }
+</style>

@@ -1,0 +1,39 @@
+<section class="soft">
+  <div class="wrap sec">
+    <div class="head">
+      <div class="eyebrow">05 隐私</div>
+      <h2 class="h2">你打的字，只在你的 Mac 上</h2>
+    </div>
+    <div class="cols">
+      <div>
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="M5.6 5.6l12.8 12.8"></path></svg>
+        <h3>不联网</h3>
+        <p>末笔不发起任何网络请求，没有云候选，也没有统计上报。</p>
+      </div>
+      <div>
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H4z"></path><path d="M9 20h6"></path><path d="M12 16v4"></path></svg>
+        <h3>使用记录留在本机</h3>
+        <p>用来排序的选字次数只存成本机的一个文件，设置里一键清除。</p>
+      </div>
+      <div>
+        <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"></path><path d="M14 3v5h5"></path><path d="M9 13h7"></path><path d="M9 17h5"></path></svg>
+        <h3>码表是一个文本文件</h3>
+        <p>内置码表来自开源的 rime-wubi。想用自己的码表，把文件放进指定文件夹就会替换。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .soft { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background-color: var(--soft); }
+  .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cols > div { padding: 8px 36px; border-left: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+  .cols > div:first-child { padding-left: 0; border-left: 0; }
+  h3 { font-size: 19px; font-weight: 700; }
+  p { color: var(--sub); }
+  @media (max-width: 860px) {
+    .cols { grid-template-columns: minmax(0, 1fr); }
+    .cols > div { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--line); margin-top: 24px; }
+    .cols > div:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+const rows = [
+  { input: '/rq', use: '日期', result: '2026年10月13日' },
+  { input: '/sj', use: '时间', result: '14:02' },
+  { input: '/dx1280', use: '大写数字', result: '壹仟贰佰捌拾' },
+  { input: '/fh', use: '符号', result: '→ ★ § ℃ ¥ ±' },
+];
+---
+<section>
+  <div class="wrap sec two top">
+    <div class="stack">
+      <div class="eyebrow">03 快捷输入</div>
+      <h2 class="h2">一个斜杠，<br />省掉一次切换</h2>
+      <p class="lead">中文模式下打 / 加代号，结果直接出现在候选窗里，按空格或数字上屏。只打一个斜杠再按空格，得到的还是斜杠。</p>
+    </div>
+    <div class="sheet">
+      <table>
+        <thead>
+          <tr><th scope="col">输入</th><th scope="col">用途</th><th scope="col">得到</th></tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr><td class="mono">{row.input}</td><td class="use">{row.use}</td><td class="result">{row.result}</td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<style>
+  .top { align-items: start; }
+  .sheet { min-width: 0; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 8px 28px; overflow-x: auto; }
+  table { width: 100%; min-width: 380px; border-collapse: collapse; font-size: 16px; }
+  th { text-align: left; color: var(--sub); font-size: 13px; font-weight: 500; padding: 16px 16px 12px 0; }
+  td { padding: 18px 16px 18px 0; border-top: 1px solid var(--line); }
+  th:last-child, td:last-child { padding-right: 0; }
+  .mono { color: var(--ac); }
+  .use { color: var(--sub); }
+  .result { font-size: 18px; }
+</style>

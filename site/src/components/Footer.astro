@@ -1,0 +1,16 @@
+---
+import { site } from '../site';
+---
+<footer>
+  <div class="wrap row">
+    <span>{site.name} · {site.domain}</span>
+    <span>五笔 86 码表来自 rime-wubi，以 LGPL-3.0 许可使用</span>
+    <a href={site.repo}>GitHub</a>
+    <span>{site.contact}</span>
+  </div>
+</footer>
+
+<style>
+  .row { padding-top: 36px; padding-bottom: 36px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: 14px; color: var(--sub); }
+  a { color: inherit; }
+</style>

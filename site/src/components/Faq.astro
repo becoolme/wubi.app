@@ -1,0 +1,34 @@
+---
+import { site } from '../site';
+
+const questions = [
+  { q: '怎么安装？', a: '下载后把「末笔」放进「输入法」文件夹，然后在 系统设置 → 键盘 → 文字输入 → 输入法 里点「编辑…」，在「简体中文」下添加「末笔」。列表里没有的话，注销再登录一次。' },
+  { q: '支持 98 版或新世纪五笔吗？', a: '内置的是 86 版。码表是可以替换的文本文件，换成其他版本的码表就能用。' },
+  { q: '候选顺序会自己变吗？', a: '默认不会。同一编码下的重码位置固定，只有还没打完时的编码提示会按你的使用习惯排序。需要重码也调频，可以在设置里打开。' },
+  { q: '收费吗？', a: site.pricing },
+];
+---
+<section id="faq" class="ruled">
+  <div class="wrap sec faq">
+    <div class="head">
+      <div class="eyebrow">07 常见问题</div>
+      <h2 class="h2">常见问题</h2>
+    </div>
+    <div class="list">
+      {questions.map((item) => (
+        <div class="q"><h3>{item.q}</h3><p>{item.a}</p></div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 64px; }
+  .head { margin-bottom: 0; }
+  .list { min-width: 0; }
+  .q { padding: 24px 0; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+  .q:last-child { border-bottom: 1px solid var(--line); }
+  h3 { font-size: 18px; font-weight: 700; }
+  p { color: var(--sub); }
+  @media (max-width: 860px) { .faq { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+</style>

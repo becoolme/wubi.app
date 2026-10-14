@@ -1,0 +1,105 @@
+---
+import Arrow from './Arrow.astro';
+import Candidates from './Candidates.astro';
+
+const accents = ['#A94438', '#1F5FBF', '#1E7A5A', '#9A6412', '#3A3A3C'];
+---
+<section id="features" class="ruled">
+  <div class="wrap sec">
+    <div class="head">
+      <div class="eyebrow">01 功能</div>
+      <h2 class="h2">照五笔的规矩来</h2>
+      <p class="lead">五笔靠的是手上的确定性。末笔的默认设置都围着这一点。</p>
+    </div>
+    <div class="grid">
+      <article class="card">
+        <div class="viz" aria-hidden="true">
+          <span class="key">g</span><span class="key">g</span><span class="key">t</span><span class="key">t</span>
+          <Arrow />
+          <span class="serif word">五笔</span>
+        </div>
+        <div class="txt">
+          <h3>四码唯一，直接上屏</h3>
+          <p>打满四码只有一个结果时不用再按空格；有重码时，敲下一个字的第一码，前一个字自动顶上去。</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="viz" aria-hidden="true">
+          <Candidates flat items={[{ word: '中国' }, { word: '跨国' }, { word: '跑车' }]} />
+        </div>
+        <div class="txt">
+          <h3>重码的位置不变</h3>
+          <p>同一个编码永远按同样的顺序出字，可以放心盲打。想让常用的词往前排，在设置里打开调频即可。</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="viz" aria-hidden="true">
+          <Candidates flat items={[{ word: '你' }, { word: '你们', rest: 'wu' }, { word: '你好', rest: 'vb' }]} />
+        </div>
+        <div class="txt">
+          <h3>编码提示跟着你的习惯</h3>
+          <p>没打完时，候选里会列出以当前编码开头的字词和剩下的编码。你常选的排在前面。</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="viz" aria-hidden="true">
+          <span class="key">Shift</span>
+          <Arrow />
+          <span class="pill"><span></span>英文</span>
+        </div>
+        <div class="txt">
+          <h3>轻按 Shift 切换中英</h3>
+          <p>光标旁边会闪一下当前状态。还没上屏的编码按英文留下，不会丢。左、右或任一 Shift 都可以指定。</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="viz" aria-hidden="true">
+          <span class="mono slash">/rq</span>
+          <Arrow />
+          <span class="date">2026年10月13日</span>
+        </div>
+        <div class="txt">
+          <h3>斜杠快捷输入</h3>
+          <p>日期、时间、大写金额和常用符号，打一个斜杠加两个字母就有，不必切换输入法或翻符号表。</p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="viz swatches" aria-hidden="true">
+          {accents.map((color, i) => <span class:list={['swatch', { picked: i === 0 }]} style={`--c: ${color}`}></span>)}
+        </div>
+        <div class="txt">
+          <h3>候选窗按你的喜好</h3>
+          <p>排列方向、主题、强调色、字号和每页候选数都能改。默认跟随系统的浅色与深色。</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; }
+  .viz {
+    height: 128px; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 20px;
+    border-bottom: 1px solid var(--line); background-color: var(--soft);
+    background-image: linear-gradient(rgba(29, 29, 31, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(29, 29, 31, .05) 1px, transparent 1px);
+    background-size: 16px 16px; background-position: center;
+  }
+  .txt { padding: 24px 26px 28px; display: flex; flex-direction: column; gap: 8px; }
+  h3 { font-size: 19px; font-weight: 700; }
+  .txt p { color: var(--sub); font-size: 15px; }
+  .word { font-size: 28px; line-height: 1; }
+  .pill { height: 34px; padding: 0 16px; border-radius: 999px; background: #2C3038; color: #F5F5F7; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; }
+  .pill span { width: 7px; height: 7px; border-radius: 50%; background: #E9A99F; }
+  .slash { font-size: 20px; color: var(--ac); }
+  .date { font-size: 18px; }
+  .swatches { gap: 12px; }
+  .swatch { width: 30px; height: 30px; border-radius: 50%; background: var(--c); }
+  .swatch.picked { box-shadow: 0 0 0 3px var(--soft), 0 0 0 4px var(--c); }
+  @media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
