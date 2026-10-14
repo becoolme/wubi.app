@@ -9,7 +9,7 @@ import { site } from '../site';
     <span aria-hidden="true" class="serif icon">末</span>
     <h2 class="serif">装上，打几行字试试</h2>
     <a href={site.downloadUrl} class="button"><DownloadIcon />下载末笔 {site.version}</a>
-    <p>{site.requires} · {site.downloadSize}</p>
+    <p>{site.requires} · {site.downloadSize} · <a href={site.releaseUrl}>版本说明</a></p>
   </div>
 </section>
 
@@ -21,4 +21,5 @@ import { site } from '../site';
   h2 { font-size: clamp(30px, 4.5vw, 46px); line-height: 1.2; }
   .button { min-height: 54px; padding: 0 32px; border-radius: 12px; background: #fff; color: #1D1D1F; font-weight: 700; font-size: 17px; display: flex; align-items: center; gap: 10px; }
   p { font-size: 14px; }
+  p a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 </style>

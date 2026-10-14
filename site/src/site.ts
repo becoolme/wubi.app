@@ -10,6 +10,7 @@ export const site = {
   repo,
   /** The disk image scripts/release.sh makes, attached to the GitHub release. */
   downloadUrl: `${repo}/releases/latest/download/Mobi-${version}.dmg`,
+  releaseUrl: `${repo}/releases/tag/v${version}`,
   version,
   requires: '需要 macOS 13 或更高版本',
   downloadSize: '约 1.5 MB',
