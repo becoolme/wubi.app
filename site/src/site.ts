@@ -1,4 +1,4 @@
-// What the page says about the release. The bracketed ones are still to be decided.
+// What the page says about the release.
 const version = '0.1.1';
 const repo = 'https://github.com/becoolme/wubi.app';
 
@@ -14,7 +14,7 @@ export const site = {
   version,
   requires: '需要 macOS 13 或更高版本',
   downloadSize: '约 1.5 MB',
-  pricing: '[定价或免费说明待定]',
+  pricing: '免费。',
   contact: 'hi@wubi.app',
   /** Plausible analytics; production sets these in .env.production. */
   analytics: {
