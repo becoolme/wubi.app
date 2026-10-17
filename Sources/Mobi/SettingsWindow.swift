@@ -93,6 +93,13 @@ private struct SettingsView: View {
                     Text("上屏编码字母").tag(Settings.EnterKey.letters)
                     Text("清空编码").tag(Settings.EnterKey.clear)
                 }
+                Picker(selection: $settings.tabKey) {
+                    Text("造词").tag(Settings.TabKey.define)
+                    Text("翻页").tag(Settings.TabKey.page)
+                } label: {
+                    Text("Tab 键")
+                    Text("翻页时 Tab 下一页、⇧Tab 上一页；空码或最后一页按 = 造词")
+                }
             }
             Section("提示") {
                 Toggle(isOn: $settings.codeHints) {
@@ -193,6 +200,8 @@ private struct UserWordsPane: View {
     @State private var code = ""
     @State private var word = ""
     @State private var filter = ""
+    /// The code last filled in from the word; one the user typed themselves is left alone.
+    @State private var autoCode = ""
     /// Shown after a press of 添加 that could not go through.
     @State private var complaint: String?
 
@@ -225,12 +234,17 @@ private struct UserWordsPane: View {
                         }
                     TextField("词", text: $word, prompt: Text("词"))
                         .textFieldStyle(.roundedBorder)
-                        .onChange(of: word) { _ in complaint = nil }
+                        .onChange(of: word) { _ in
+                            complaint = nil
+                            guard code.isEmpty || code == autoCode else { return }
+                            autoCode = Dictionary.table.wordCode(for: newWord) ?? ""
+                            code = autoCode
+                        }
                         .onSubmit(add)
                     Button("添加", action: add)
                 }
                 .labelsHidden()
-                Text(complaint ?? "自造词排在同一编码的内置词之前。打字时遇到空码，也可以按 = 直接造词。")
+                Text(complaint ?? "编码按五笔词组规则自动填好，也可以自己改。自造词排在同一编码的内置词之前。")
                     .font(.callout)
                     .foregroundStyle(complaint == nil ? Color.secondary : Color.red)
             } header: {

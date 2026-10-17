@@ -27,6 +27,8 @@ public final class CodeTable {
     /// Words the user added, as `code word`. These are never treated as rare.
     private var userWords: Set<String> = []
     private var rareCache: [String: Bool] = [:]
+    /// Each character's longest code in the table, built the first time a word code is needed.
+    private var fullCodes: [String: String]?
 
     /// `keep` can turn words away, e.g. those the system has no font to draw.
     public init(text: String, keep: ((String) -> Bool)? = nil) {
@@ -112,6 +114,36 @@ public final class CodeTable {
         let rare = CodeTable.isRare(word)
         rareCache[word] = rare
         return rare
+    }
+
+    /// The code a word of two or more characters takes by the Wubi rules, from each
+    /// character's longest code in the table: two characters give two keys each; three give
+    /// one, one and two; four or more give one each from the first three and the last.
+    /// Nil for a single character, or when a character has no code long enough.
+    public func wordCode(for word: String) -> String? {
+        let chars = word.map(String.init)
+        guard chars.count >= 2 else { return nil }
+        if fullCodes == nil {
+            var codes: [String: String] = [:]
+            for (code, entries) in exact {
+                for entry in entries where entry.word.count == 1 && !userWords.contains("\(code) \(entry.word)") {
+                    if code.count > codes[entry.word]?.count ?? 0 { codes[entry.word] = code }
+                }
+            }
+            fullCodes = codes
+        }
+        let takes: [(index: Int, keys: Int)]
+        switch chars.count {
+        case 2: takes = [(0, 2), (1, 2)]
+        case 3: takes = [(0, 1), (1, 1), (2, 2)]
+        default: takes = [(0, 1), (1, 1), (2, 1), (chars.count - 1, 1)]
+        }
+        var result = ""
+        for take in takes {
+            guard let code = fullCodes?[chars[take.index]], code.count >= take.keys else { return nil }
+            result += code.prefix(take.keys)
+        }
+        return result
     }
 
     /// Every entry, in no particular order.

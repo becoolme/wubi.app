@@ -79,6 +79,10 @@ final class MobiInputController: IMKInputController {
         case 51: return apply(session.handle(.backspace))
         case 36, 76: return apply(session.handle(.enter))
         case 53: return apply(session.handle(.escape))
+        case 48:
+            guard composing else { return false }
+            if Settings.shared.tabKey == .page { return apply(session.handle(shift ? .pageUp : .pageDown)) }
+            return apply(session.handle(.define))
         case 116: return apply(session.handle(.pageUp))
         case 121: return apply(session.handle(.pageDown))
         case 123...126: return composing
@@ -120,7 +124,7 @@ final class MobiInputController: IMKInputController {
             case ";": return apply(session.handle(.select(1)))
             case "'": return apply(session.handle(.select(2)))
             case "-": return apply(session.handle(.pageUp))
-            case "=": return apply(session.handle(session.canDefine ? .define : .pageDown))
+            case "=": return apply(session.handle(session.canDefine && session.isLastPage ? .define : .pageDown))
             default: break
             }
         }
@@ -219,7 +223,7 @@ final class MobiInputController: IMKInputController {
             return
         }
         var content = PanelContent(code: buffer)
-        if let code = session.defining {
+        if let code = session.definingCode {
             content.code = "造词 \(code)" + (buffer.isEmpty ? "" : "    \(buffer)")
         }
         if session.hasCandidates {
@@ -247,7 +251,7 @@ final class MobiInputController: IMKInputController {
             content.message = "没有这个代号    ⌫ 修改    ⏎ 上屏字符"
         } else {
             let enter = Settings.shared.enterKey == .letters ? "上屏字母" : "清空"
-            content.message = "没有这个编码    ⌫ 修改    ⏎ \(enter)" + (session.canDefine ? "    = 造词" : "")
+            content.message = "没有这个编码    ⌫ 修改    ⏎ \(enter)" + (session.canDefine ? (Settings.shared.tabKey == .define ? "    Tab 造词" : "    = 造词") : "")
         }
         CandidatePanel.shared.onPick = { [weak self] i in self?.pick(i) }
         CandidatePanel.shared.show(content, caret: caretRect())
@@ -255,7 +259,7 @@ final class MobiInputController: IMKInputController {
 
     private func pick(_ i: Int) {
         if i < 0 {
-            // A click on the "no such code" message is the same as pressing "=".
+            // A click on the "no such code" message starts defining a word.
             guard session.canDefine else { return }
             _ = session.handle(.define)
         } else {

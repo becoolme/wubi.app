@@ -1,5 +1,5 @@
 // What the page says about the release.
-const version = '0.1.1';
+const version = '0.1.2';
 const repo = 'https://github.com/becoolme/wubi.app';
 
 export const site = {

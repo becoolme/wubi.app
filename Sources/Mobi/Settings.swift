@@ -11,6 +11,7 @@ final class Settings: ObservableObject {
     enum SwitchKey: String, CaseIterable { case leftShift, rightShift, anyShift, off }
     enum EmptyCode: String, CaseIterable { case keep, clear }
     enum EnterKey: String, CaseIterable { case letters, clear }
+    enum TabKey: String, CaseIterable { case define, page }
 
     static let accents: [(name: String, hex: String)] = [
         ("赭红", "#A94438"), ("靛青", "#1F5FBF"), ("松绿", "#1E7A5A"), ("琥珀", "#9A6412"), ("石墨", "#3A3A3C"),
@@ -22,6 +23,7 @@ final class Settings: ObservableObject {
     @Published var fifthKeyCommits: Bool { didSet { defaults.set(fifthKeyCommits, forKey: "fifthKeyCommits") } }
     @Published var emptyCode: EmptyCode { didSet { defaults.set(emptyCode.rawValue, forKey: "emptyCode") } }
     @Published var enterKey: EnterKey { didSet { defaults.set(enterKey.rawValue, forKey: "enterKey") } }
+    @Published var tabKey: TabKey { didSet { defaults.set(tabKey.rawValue, forKey: "tabKey") } }
     @Published var adaptExact: Bool { didSet { defaults.set(adaptExact, forKey: "adaptExact") } }
     @Published var slashQuickInput: Bool { didSet { defaults.set(slashQuickInput, forKey: "slashQuickInput") } }
     @Published var tempPinyin: Bool { didSet { defaults.set(tempPinyin, forKey: "tempPinyin") } }
@@ -45,6 +47,7 @@ final class Settings: ObservableObject {
         fifthKeyCommits = defaults.bool(forKey: "fifthKeyCommits")
         emptyCode = EmptyCode(rawValue: defaults.string(forKey: "emptyCode") ?? "") ?? .keep
         enterKey = EnterKey(rawValue: defaults.string(forKey: "enterKey") ?? "") ?? .letters
+        tabKey = TabKey(rawValue: defaults.string(forKey: "tabKey") ?? "") ?? .define
         codeHints = defaults.bool(forKey: "codeHints")
         adaptExact = defaults.bool(forKey: "adaptExact")
         slashQuickInput = defaults.bool(forKey: "slashQuickInput")

@@ -1,6 +1,16 @@
 // What changed in each release, newest first. The GitHub release notes use the same words.
 export const changelog = [
   {
+    version: '0.1.2',
+    date: '2026-10-17',
+    changes: [
+      '造词的编码按五笔词组规则从字算出来，和用什么编码打出这个词无关。比如打 rwp、wa 造「迭代」，存为 rwwa。',
+      '打编码时按 Tab 直接造词，不用翻到最后一页。习惯用 Tab 翻页的，可以在设置里把 Tab 改成翻页，⇧Tab 上一页。',
+      '= 照常翻页，只在空码或最后一页时造词。',
+      '在设置里添加自造词时，编码会自动填好。',
+    ],
+  },
+  {
     version: '0.1.1',
     date: '2026-10-14',
     changes: [

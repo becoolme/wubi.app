@@ -106,12 +106,20 @@ public final class Session {
 
     public var isDefining: Bool { defining != nil }
 
-    /// The code can take a word of the user's own: it matches nothing, or its last page is
-    /// showing, where the key that turns pages has nothing left to turn to.
+    /// Where the new word will be saved: the code its characters give by the Wubi rules,
+    /// or, for a single character or one the table cannot spell, the code typed before.
+    public var definingCode: String? {
+        defining.map { table.wordCode(for: definedWord) ?? $0 }
+    }
+
+    /// A code is being typed that can start a word of the user's own.
     public var canDefine: Bool {
         defining == nil && !buffer.isEmpty && buffer.count <= Session.maxCodeLength
-            && !isQuick && !isPinyin && page + 1 >= pageCount
+            && !isQuick && !isPinyin
     }
+
+    /// The last page is showing, where the key that turns pages has nothing left to turn to.
+    public var isLastPage: Bool { page + 1 >= pageCount }
 
     public var isComposing: Bool { !buffer.isEmpty || defining != nil }
     public var hasCandidates: Bool { !all.isEmpty }
@@ -156,8 +164,9 @@ public final class Session {
         return Output()
     }
 
-    private func finishDefining(_ code: String) -> Output {
+    private func finishDefining(_ typed: String) -> Output {
         let word = definedWord
+        let code = definingCode ?? typed
         cancelDefining()
         guard !word.isEmpty else { return Output() }
         table.addUserWords(text: "\(code) \(word)")

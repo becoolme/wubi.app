@@ -366,9 +366,10 @@ final class FeatureTests: XCTestCase {
         let session = Session(table: table)
         session.options.pageSize = 2
         for ch in "rwud" { _ = session.handle(.letter(ch)) }
-        XCTAssertFalse(session.canDefine)
-        _ = session.handle(.pageDown)
         XCTAssertTrue(session.canDefine)
+        XCTAssertFalse(session.isLastPage)
+        _ = session.handle(.pageDown)
+        XCTAssertTrue(session.isLastPage)
         _ = session.handle(.define)
         for ch in "rwy" { _ = session.handle(.letter(ch)) }
         _ = session.handle(.space)
@@ -376,5 +377,38 @@ final class FeatureTests: XCTestCase {
         _ = session.handle(.space)
         XCTAssertEqual(session.handle(.enter).committed, "推送")
         XCTAssertEqual(table.words(for: "rwud"), ["推送", "摄像头", "甲", "乙"])
+    }
+
+    func testWordCodeFollowsWubiRules() {
+        let table = CodeTable(text: "rwp 迭\nrwpi 迭\nwa 代\nway 代\nl 连\nlpk 连\nfcu 云\niawn 港\nk 中\nkhk 中\nwxe 华\nw 人\nnav 民\na 国\nlgyi 国")
+        table.addUserWords(text: "x 迭")
+        XCTAssertEqual(table.wordCode(for: "迭代"), "rwwa")
+        XCTAssertEqual(table.wordCode(for: "连云港"), "lfia")
+        XCTAssertEqual(table.wordCode(for: "中华人民"), "kwwn")
+        XCTAssertEqual(table.wordCode(for: "中华人民国"), "kwwl")
+        XCTAssertNil(table.wordCode(for: "迭"))
+        XCTAssertNil(table.wordCode(for: "迭甲"))
+        XCTAssertNil(table.wordCode(for: "人人"))
+    }
+
+    func testDefinedWordTakesItsOwnCode() {
+        let table = CodeTable(text: "rww 失 抢\nrwwa 抚今追昔\nrwp 迭\nrwpi 迭\nwa 代\nway 代\nrwu 推")
+        let session = Session(table: table)
+        var saved: [String] = []
+        session.onDefine = { saved.append("\($0) \($1)") }
+        for ch in "rww" { _ = session.handle(.letter(ch)) }
+        XCTAssertTrue(session.canDefine)
+        _ = session.handle(.define)
+        XCTAssertEqual(session.definingCode, "rww")
+        for ch in "rwp" { _ = session.handle(.letter(ch)) }
+        _ = session.handle(.space)
+        XCTAssertEqual(session.definingCode, "rww")
+        for ch in "wa" { _ = session.handle(.letter(ch)) }
+        _ = session.handle(.space)
+        XCTAssertEqual(session.definingCode, "rwwa")
+        XCTAssertEqual(session.handle(.enter).committed, "迭代")
+        XCTAssertEqual(saved, ["rwwa 迭代"])
+        XCTAssertEqual(table.words(for: "rwwa"), ["迭代", "抚今追昔"])
+        XCTAssertEqual(table.words(for: "rww"), ["失", "抢"])
     }
 }
