@@ -1,6 +1,13 @@
 // What changed in each release, newest first. The GitHub release notes use the same words.
 export const changelog = [
   {
+    version: '0.1.4',
+    date: '2026-10-17',
+    changes: [
+      '从 0.1.2 或更早的版本升级上来，末笔会提示你在系统设置里重新添加一次。不添加的话，重启后末笔会从输入法菜单里消失。已经消失的，按常见问题里的步骤加回来即可。',
+    ],
+  },
+  {
     version: '0.1.3',
     date: '2026-10-17',
     changes: [
