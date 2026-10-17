@@ -1,0 +1,4 @@
+/* The system names an input mode after its ID unless the bundle gives it a name. */
+"com.becool.inputmethod.Mobi.wubi86" = "末笔";
+"CFBundleName" = "末笔";
+"CFBundleDisplayName" = "末笔";

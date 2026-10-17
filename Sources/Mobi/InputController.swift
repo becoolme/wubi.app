@@ -15,6 +15,7 @@ final class MobiInputController: IMKInputController {
     private static let noRange = NSRange(location: NSNotFound, length: NSNotFound)
     private static let leftShift: UInt16 = 56
     private static let rightShift: UInt16 = 60
+    private static let capsLock: UInt16 = 57
 
     override func recognizedEvents(_ sender: Any!) -> Int {
         Int(NSEvent.EventTypeMask.keyDown.rawValue | NSEvent.EventTypeMask.flagsChanged.rawValue)
@@ -47,15 +48,25 @@ final class MobiInputController: IMKInputController {
     override func handle(_ event: NSEvent!, client sender: Any!) -> Bool {
         guard let event else { return false }
         if event.type == .flagsChanged {
+            // Caps Lock hands the keys to the app; what was being typed stays as letters.
+            if event.keyCode == Self.capsLock, session.isComposing { commitComposition(sender) }
             trackShift(event)
             return false
         }
         guard event.type == .keyDown else { return false }
+        Updater.shared.noteKey()
+        // Said at the first key typed, when there is a caret to put it by and someone looking.
+        if let notice = Updater.shared.takeNotice() {
+            ModeHUD.shared.flash(note: notice, caret: caretRect())
+        }
         loneShift = nil
         configure()
 
         let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
-        if english || flags.contains(.capsLock) { return false }
+        if english || flags.contains(.capsLock) {
+            if session.isComposing { commitComposition(sender) }
+            return false
+        }
         if !flags.intersection([.command, .control, .option]).isEmpty {
             // A shortcut ends the composition; the letters typed so far stay in the text.
             commitComposition(sender)
@@ -275,10 +286,19 @@ final class MobiInputController: IMKInputController {
         let item = NSMenuItem(title: "设置…", action: #selector(openSettings(_:)), keyEquivalent: "")
         item.target = self
         menu.addItem(item)
+        let update = NSMenuItem(title: "检查更新…", action: #selector(checkForUpdates(_:)), keyEquivalent: "")
+        update.target = self
+        menu.addItem(update)
+        // Greyed out, only there to say which version is running.
+        menu.addItem(NSMenuItem(title: "版本 \(Updater.shared.version)", action: nil, keyEquivalent: ""))
         return menu
     }
 
     @objc private func openSettings(_ sender: Any?) {
         SettingsWindow.shared.show()
+    }
+
+    @objc private func checkForUpdates(_ sender: Any?) {
+        Updater.shared.check()
     }
 }

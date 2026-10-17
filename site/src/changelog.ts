@@ -1,6 +1,16 @@
 // What changed in each release, newest first. The GitHub release notes use the same words.
 export const changelog = [
   {
+    version: '0.1.3',
+    date: '2026-10-17',
+    changes: [
+      '可以用 Caps Lock 切换中英文了：系统设置 → 键盘 → 输入法 → 所有输入法里打开「使用大写锁定键切换 ABC」，短按切换，长按锁定大写。',
+      '打字时按 Caps Lock，打到一半的编码会作为字母上屏，候选框随之关闭。',
+      '自动更新：新版在后台下载，不打字时自动换上。也可以在设置里改成有新版时提示，或者不检查。',
+      '改用安装器安装，末笔装在你自己的用户目录里，以后更新不用再输入密码。',
+    ],
+  },
+  {
     version: '0.1.2',
     date: '2026-10-17',
     changes: [

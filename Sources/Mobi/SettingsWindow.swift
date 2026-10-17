@@ -56,6 +56,7 @@ private enum Pane: String, CaseIterable, Identifiable {
 
 private struct SettingsView: View {
     @ObservedObject private var settings = Settings.shared
+    @ObservedObject private var updater = Updater.shared
     @State private var pane: Pane? = .general
     @State private var usageCleared = false
 
@@ -146,6 +147,26 @@ private struct SettingsView: View {
                     Text("关闭").tag(Settings.SwitchKey.off)
                 }
                 Toggle("中文模式下使用中文标点", isOn: $settings.chinesePunctuation)
+            }
+            Section("更新") {
+                Picker(selection: $updater.mode) {
+                    Text("自动更新").tag(Updater.Mode.automatic)
+                    Text("有新版时提示").tag(Updater.Mode.notify)
+                    Text("不检查").tag(Updater.Mode.off)
+                } label: {
+                    Text("更新")
+                    switch updater.mode {
+                    case .automatic: Text("在后台下载新版，不打字时自动换上")
+                    case .notify: Text("每周看一次有没有新版，有就提示你")
+                    case .off: Text("不联网检查，需要时点「检查更新…」")
+                    }
+                }
+                LabeledContent {
+                    Button("检查更新…") { updater.check() }
+                } label: {
+                    Text("当前版本")
+                    Text(updater.version)
+                }
             }
         }
     }

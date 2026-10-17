@@ -7,6 +7,8 @@ guard let server = IMKServer(name: connectionName, bundleIdentifier: Bundle.main
     exit(1)
 }
 
+InputSources.migrate()
+Updater.shared.start()
 Dictionary.preparePinyin()
 
 let app = NSApplication.shared

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
+    <channel>
+        <title>末笔</title>
+        <link>https://wubi.app/</link>
+        <language>zh-CN</language>
+        <!-- releases -->
+        <item>
+            <title>0.1.3</title>
+            <pubDate>Sat, 17 Oct 2026 17:50:46 +0000</pubDate>
+            <sparkle:version>11</sparkle:version>
+            <sparkle:shortVersionString>0.1.3</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<ul><li>可以用 Caps Lock 切换中英文了：系统设置 → 键盘 → 输入法 → 所有输入法里打开「使用大写锁定键切换 ABC」，短按切换，长按锁定大写。</li><li>打字时按 Caps Lock，打到一半的编码会作为字母上屏，候选框随之关闭。</li><li>自动更新：新版在后台下载，不打字时自动换上。也可以在设置里改成有新版时提示，或者不检查。</li><li>改用安装器安装，末笔装在你自己的用户目录里，以后更新不用再输入密码。</li></ul>]]></description>
+            <enclosure url="https://github.com/becoolme/wubi.app/releases/download/v0.1.3/Mobi-0.1.3.zip" sparkle:edSignature="+fKKq7MMoSVtzRDQB0gMK62XP5uJDVVmuXcRkfDSi5io7dsbUDqEq7cjB+5PiQjRmrz0OlSv5ZN/4XaVHRqDBA==" length="2353204" type="application/octet-stream"/>
+        </item>
+    </channel>
+</rss>

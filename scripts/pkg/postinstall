@@ -1,0 +1,23 @@
+#!/bin/bash
+# The package lands in a staging folder; 末笔 goes on to the input methods folder in the home of
+# whoever is signed in, where Sparkle can replace it with a new version without asking for a
+# password. Versions up to 0.1.2 went into /Library/Input Methods and are taken out of there.
+staged="$2/Mobi.app"
+pkill -x Mobi
+user="$(stat -f %Su /dev/console)"
+if [ -z "$user" ] || [ "$user" = root ] || [ "$user" = loginwindow ]; then
+    # Nobody to install for, as when installed from the command line over ssh.
+    rm -rf "/Library/Input Methods/Mobi.app"
+    mv "$staged" "/Library/Input Methods/"
+    exit 0
+fi
+home="$(dscl . -read "/Users/$user" NFSHomeDirectory | awk '{print $2}')"
+dest="$home/Library/Input Methods"
+sudo -u "$user" mkdir -p "$dest"
+rm -rf "$dest/Mobi.app" "/Library/Input Methods/Mobi.app"
+ditto "$staged" "$dest/Mobi.app"
+chown -R "$user:staff" "$dest/Mobi.app"
+rm -rf "$staged"
+# Started this way it turns on its input mode where a version without one was enabled.
+launchctl asuser "$(id -u "$user")" sudo -u "$user" open "$dest/Mobi.app"
+exit 0

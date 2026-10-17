@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>zh_CN</string>
+	<key>CFBundleDisplayName</key>
+	<string>末笔</string>
 	<key>CFBundleExecutable</key>
 	<string>Mobi</string>
 	<key>CFBundleIconFile</key>
@@ -14,26 +16,73 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>末笔</string>
-	<key>CFBundleDisplayName</key>
-	<string>末笔</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.2</string>
+	<string>0.1.3</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
-	<key>LSMinimumSystemVersion</key>
-	<string>13.0</string>
-	<key>LSUIElement</key>
-	<true/>
-	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
-	<key>NSHighResolutionCapable</key>
-	<true/>
+	<string>11</string>
+	<key>ComponentInputModeDict</key>
+	<dict>
+		<key>tsInputModeListKey</key>
+		<dict>
+			<key>com.becool.inputmethod.Mobi.wubi86</key>
+			<dict>
+				<key>TISIconIsTemplate</key>
+				<true/>
+				<key>TISInputSourceID</key>
+				<string>com.becool.inputmethod.Mobi.wubi86</string>
+				<key>TISIntendedLanguage</key>
+				<string>zh-Hans</string>
+				<key>tsInputModeAlternateMenuIconFileKey</key>
+				<string>MenuIcon.pdf</string>
+				<key>tsInputModeCharacterRepertoireKey</key>
+				<array>
+					<string>Hans</string>
+				</array>
+				<key>tsInputModeDefaultStateKey</key>
+				<true/>
+				<key>tsInputModeIsVisibleKey</key>
+				<true/>
+				<key>tsInputModeMenuIconFileKey</key>
+				<string>MenuIcon.pdf</string>
+				<key>tsInputModePaletteIconFileKey</key>
+				<string>MenuIcon.pdf</string>
+				<key>tsInputModePrimaryInScriptKey</key>
+				<true/>
+				<key>tsInputModeScriptKey</key>
+				<string>smSimpChinese</string>
+			</dict>
+		</dict>
+		<key>tsVisibleInputModeOrderedArrayKey</key>
+		<array>
+			<string>com.becool.inputmethod.Mobi.wubi86</string>
+		</array>
+	</dict>
 	<key>InputMethodConnectionName</key>
 	<string>Mobi_Connection</string>
 	<key>InputMethodServerControllerClass</key>
 	<string>MobiInputController</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>13.0</string>
+	<key>LSUIElement</key>
+	<true/>
+	<key>NSHighResolutionCapable</key>
+	<true/>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>SUAutomaticallyUpdate</key>
+	<true/>
+	<key>SUEnableAutomaticChecks</key>
+	<true/>
+	<key>SUFeedURL</key>
+	<string>https://wubi.app/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>EolqAS0FJ9jnnbOaZ7sONT7AhCso4I5O+gSwpqaETZo=</string>
+	<key>TICapsLockLanguageSwitchCapable</key>
+	<true/>
+	<key>TISIconIsTemplate</key>
+	<true/>
 	<key>TISInputSourceID</key>
 	<string>com.becool.inputmethod.Mobi</string>
 	<key>TISIntendedLanguage</key>
@@ -44,7 +93,5 @@
 	</array>
 	<key>tsInputMethodIconFileKey</key>
 	<string>MenuIcon.pdf</string>
-	<key>TISIconIsTemplate</key>
-	<true/>
 </dict>
 </plist>

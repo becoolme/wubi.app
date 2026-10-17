@@ -11,8 +11,13 @@ app="build/Mobi.app"
 rm -rf "$app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources"
 cp "$bin" "$app/Contents/MacOS/Mobi"
+mkdir -p "$app/Contents/Frameworks"
+ditto "$(dirname "$bin")/Sparkle.framework" "$app/Contents/Frameworks/Sparkle.framework"
+# Mobi is not sandboxed, so Sparkle needs none of its XPC services.
+rm -rf "$app/Contents/Frameworks/Sparkle.framework/Versions/B/XPCServices"
 cp Resources/Info.plist "$app/Contents/Info.plist"
 cp Resources/wubi86.txt "$app/Contents/Resources/"
+cp -R Resources/*.lproj "$app/Contents/Resources/"
 
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
@@ -22,8 +27,14 @@ cp "$tmp/MenuIcon.pdf" "$app/Contents/Resources/"
 
 identity="${SIGN_IDENTITY:--}"
 if [ "$identity" = "-" ]; then
-    codesign --force --sign - "$app"
+    sign=(codesign --force --sign -)
 else
-    codesign --force --options runtime --timestamp --sign "$identity" "$app"
+    sign=(codesign --force --options runtime --timestamp --sign "$identity")
 fi
+# Inside out: Sparkle's helpers, then Sparkle, then the app.
+sparkle="$app/Contents/Frameworks/Sparkle.framework/Versions/B"
+"${sign[@]}" "$sparkle/Autoupdate"
+"${sign[@]}" "$sparkle/Updater.app"
+"${sign[@]}" "$app/Contents/Frameworks/Sparkle.framework"
+"${sign[@]}" "$app"
 echo "Built $app"

@@ -33,7 +33,7 @@
 
 ## 安装
 
-从 [Releases](https://github.com/becoolme/wubi.app/releases) 下载 `Mobi-<版本>.dmg`，打开后把「末笔」拖到旁边的「输入法」文件夹上（会要求输入电脑密码）。然后到 系统设置 → 键盘 → 文字输入 → 输入法 → 编辑… → ＋ → 简体中文，添加「末笔」。列表里没有的话，注销再登录一次。
+从 [Releases](https://github.com/becoolme/wubi.app/releases) 下载 `Mobi-<版本>.pkg`，打开后按提示安装（会要求输入一次电脑密码）。末笔装在你自己的 `~/Library/Input Methods` 里，以后在后台自动更新，不用再输密码。然后到 系统设置 → 键盘 → 文字输入 → 输入法 → 编辑… → ＋ → 简体中文，添加「末笔」。列表里没有的话，注销再登录一次。
 
 ### 从源码构建
 
@@ -77,7 +77,7 @@ site               官网（Astro）
 
 ### 发布
 
-`scripts/release.sh` 用 Developer ID 签名、打包成 `build/Mobi-<版本>.dmg`，再交给 Apple 公证。公证凭据只需保存一次：
+`scripts/release.sh` 用 Developer ID 签名，打出安装器 `build/Mobi-<版本>.pkg` 和自动更新用的 `build/Mobi-<版本>.zip`，交给 Apple 公证，再用 Sparkle 的私钥（钥匙串里的 `mobi` 账户）给 zip 签名，把这一版写进 `site/public/appcast.xml`。更新说明取自 `site/src/changelog.ts`，要先写好。公证凭据只需保存一次：
 
 ```bash
 xcrun notarytool store-credentials mobi-notary --apple-id <Apple ID> --team-id 7U5UR46DGH
@@ -87,7 +87,7 @@ xcrun notarytool store-credentials mobi-notary --apple-id <Apple ID> --team-id 7
 ./scripts/release.sh
 ```
 
-版本号在 `Resources/Info.plist`，官网的版本号在 `site/src/site.ts`，两处要一起改。
+版本号在 `Resources/Info.plist`，官网的版本号在 `site/src/site.ts`，两处要一起改；`CFBundleVersion` 每次发布都要比上一版大，Sparkle 靠它判断新旧。打完包把 pkg 和 zip 传到 GitHub Release（`v<版本>`），再部署官网，已安装的末笔就会从 <https://wubi.app/appcast.xml> 看到新版。
 
 运行测试：
 

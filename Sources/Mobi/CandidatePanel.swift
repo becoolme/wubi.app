@@ -45,11 +45,13 @@ private func makePanel(content: NSView) -> NSPanel {
 }
 
 /// Puts a panel just below the caret, or above it when there is no room.
-private func place(_ panel: NSPanel, size: NSSize, caret: NSRect) {
+/// Puts the panel under the caret, or over it where there is no room below or `above` asks.
+private func place(_ panel: NSPanel, size: NSSize, caret: NSRect, above: Bool = false) {
     let screen = NSScreen.screens.first { $0.frame.contains(caret.origin) } ?? NSScreen.main
     let bounds = screen?.visibleFrame ?? NSRect(x: 0, y: 0, width: 1440, height: 900)
     var origin = NSPoint(x: caret.minX - 10, y: caret.minY - 6 - size.height)
-    if origin.y < bounds.minY { origin.y = caret.maxY + 6 }
+    if above || origin.y < bounds.minY { origin.y = caret.maxY + 6 }
+    if origin.y + size.height > bounds.maxY { origin.y = caret.minY - 6 - size.height }
     origin.x = max(bounds.minX + 4, min(origin.x, bounds.maxX - size.width - 4))
     panel.setFrame(NSRect(origin: origin, size: size), display: true)
     panel.invalidateShadow()
@@ -224,17 +226,19 @@ final class ModeHUD {
 
     private final class HUDView: NSView {
         var english = false { didSet { needsDisplay = true } }
+        /// Said in place of the mode, as after an update.
+        var note: String? { didSet { needsDisplay = true } }
         override var isFlipped: Bool { true }
 
         private var badge: NSAttributedString {
-            NSAttributedString(string: english ? "英" : "中", attributes: [
+            NSAttributedString(string: note != nil ? "新" : english ? "英" : "中", attributes: [
                 .font: NSFont.systemFont(ofSize: 14, weight: .bold),
                 .foregroundColor: english ? NSColor(hex: "#22262E")! : NSColor.white,
             ])
         }
 
         private var label: NSAttributedString {
-            NSAttributedString(string: english ? "English" : "五笔 86", attributes: [
+            NSAttributedString(string: note ?? (english ? "English" : "五笔 86"), attributes: [
                 .font: NSFont.systemFont(ofSize: 13), .foregroundColor: NSColor(hex: "#F5F5F7")!,
             ])
         }
@@ -263,14 +267,26 @@ final class ModeHUD {
     private var hideWork: DispatchWorkItem?
 
     func flash(english: Bool, caret: NSRect) {
+        view.note = nil
         view.english = english
+        show(caret: caret, for: 0.8)
+    }
+
+    /// Shown over the caret, as it comes up while typing and the candidates take the room below.
+    func flash(note: String, caret: NSRect) {
+        view.note = note
+        view.english = false
+        show(caret: caret, for: 3, above: true)
+    }
+
+    private func show(caret: NSRect, for seconds: TimeInterval, above: Bool = false) {
         let size = view.fittingContentSize
         view.frame = NSRect(origin: .zero, size: size)
-        place(panel, size: size, caret: caret)
+        place(panel, size: size, caret: caret, above: above)
         hideWork?.cancel()
         let work = DispatchWorkItem { [weak self] in self?.panel.orderOut(nil) }
         hideWork = work
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: work)
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds, execute: work)
     }
 
     func hide() {

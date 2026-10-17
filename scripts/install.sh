@@ -9,5 +9,7 @@ mkdir -p "$dest"
 pkill -x Mobi 2>/dev/null || true
 rm -rf "$dest/Mobi.app"
 cp -R build/Mobi.app "$dest/"
+# Started once by hand, it turns on its input mode where an older version was enabled.
+open "$dest/Mobi.app"
 echo "已安装到 $dest/Mobi.app"
 echo "首次安装：系统设置 → 键盘 → 文字输入 → 输入法 → 编辑… → ＋ → 简体中文 → 末笔"
