@@ -1,0 +1,36 @@
+---
+import Base from './Base.astro';
+import { site } from '../site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** When the text last changed, as shown on the page. */
+  updated: string;
+}
+
+const { title, description, updated } = Astro.props;
+---
+<Base title={`${title} · ${site.name}`} description={description}>
+  <article class="wrap doc">
+    <h1 class="h2">{title}</h1>
+    <p class="updated">最后更新：{updated}</p>
+    <slot />
+  </article>
+</Base>
+
+<style>
+  .doc { max-width: 760px; padding-top: 72px; padding-bottom: 96px; }
+  .updated { margin-top: 12px; font-size: 14px; color: var(--sub); }
+  .doc :global(h2) { margin: 44px 0 12px; font-family: var(--serif); font-weight: 900; font-size: 22px; line-height: 1.4; }
+  .doc :global(p) { margin-top: 12px; color: var(--sub); }
+  .doc :global(ul) { margin: 12px 0 0; padding-left: 1.4em; color: var(--sub); }
+  .doc :global(li + li) { margin-top: 6px; }
+  .doc :global(strong) { color: var(--ink); font-weight: 600; }
+  .doc :global(code) { font-family: var(--mono); font-size: .92em; overflow-wrap: anywhere; }
+  .doc :global(a) { color: var(--ac); }
+  @media (max-width: 640px) {
+    .doc { padding-top: 48px; padding-bottom: 64px; }
+    .doc :global(h2) { margin-top: 36px; }
+  }
+</style>

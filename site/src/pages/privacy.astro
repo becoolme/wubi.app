@@ -1,0 +1,46 @@
+---
+import Doc from '../layouts/Doc.astro';
+import { site } from '../site';
+---
+<Doc title="隐私政策" description="末笔输入法和 wubi.app 网站收集什么、不收集什么。" updated="2026 年 10 月 17 日">
+  <p>末笔是一款在你的 Mac 上本地运行的五笔输入法。简单说：<strong>你打的字不会离开你的电脑</strong>。末笔没有账号，没有云候选，没有统计上报，也没有广告。下面写清楚每一处细节。</p>
+
+  <h2>你打的字</h2>
+  <p>按键、编码和候选都在本机处理，不会发给我们或任何第三方。拼音反查用的是 macOS 自带的汉字转拼音，同样在本机完成。</p>
+
+  <h2>存在本机的文件</h2>
+  <p>末笔只在 <code>~/Library/Application Support/Mobi/</code> 里存这几样东西：</p>
+  <ul>
+    <li><strong>usage.json</strong>：每个词被选了多少次，用来排序编码提示。设置 → 通用 → 词频 里可以一键清除。</li>
+    <li><strong>user.txt</strong>：你自己造的词。</li>
+    <li><strong>wubi86.txt</strong>：只有你放进自己的码表时才有。</li>
+  </ul>
+  <p>其余设置存在 macOS 的偏好设置里。这些文件不会被上传。删掉这个文件夹，你的词频记录和自造词就都清空了。</p>
+
+  <h2>检查更新</h2>
+  <p>这是末笔唯一会联网的地方。它用开源的 Sparkle 检查更新：</p>
+  <ul>
+    <li>选「自动更新」或「有新版时提示」时，末笔会定期向 <code>{site.domain}</code> 请求一个版本列表（appcast.xml）。发现新版时，从 GitHub 下载安装包。</li>
+    <li>请求里只有这类网络请求本来就会带的信息：你的 IP 地址，以及请求头里末笔和 Sparkle 的版本号。末笔没有开启 Sparkle 的系统信息上报，不发送你的设备型号、系统配置或任何输入内容。</li>
+    <li>网站托管在 Cloudflare，安装包放在 GitHub，它们可能按自己的隐私政策记录访问日志。</li>
+    <li>在 设置 → 更新 里选「不检查」，末笔就完全不联网。需要时再手动点「检查更新…」。</li>
+  </ul>
+
+  <h2>wubi.app 网站</h2>
+  <ul>
+    <li>网站用 Plausible 统计访问量。它不用 Cookie，不跨站追踪，只汇总页面浏览量、来源和国家/地区这类数据，不识别具体的人。</li>
+    <li>首页的「试一试」完全在你的浏览器里运行，打的字不会发送出去。</li>
+  </ul>
+
+  <h2>你联系我们时</h2>
+  <p>如果你发邮件到 <a href={`mailto:${site.contact}`}>{site.contact}</a>，我们只用你的邮箱地址和邮件内容来回复你。在 GitHub 上提的 issue 是公开的，由 GitHub 保管。</p>
+
+  <h2>我们不做的事</h2>
+  <p>不出售、不出租、不分享你的任何数据。我们本来也没有收集它们。</p>
+
+  <h2>这份政策的变更</h2>
+  <p>如果末笔开始处理新的数据，我们会先更新这一页，并在<a href="/#changelog">更新记录</a>里说明。</p>
+
+  <h2>联系</h2>
+  <p>对隐私有任何疑问，写信到 <a href={`mailto:${site.contact}`}>{site.contact}</a>。末笔的源代码在 <a href={site.repo}>GitHub</a> 公开，上面说的每一条都可以在代码里核对。</p>
+</Doc>

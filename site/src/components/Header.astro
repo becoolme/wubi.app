@@ -1,23 +1,23 @@
 ---
 const links = [
-  { href: '#try', text: '试一试' },
-  { href: '#features', text: '功能' },
-  { href: '#pinyin', text: '拼音反查' },
-  { href: '#define', text: '造词' },
-  { href: '#keys', text: '键位' },
-  { href: '#faq', text: '常见问题' },
-  { href: '#changelog', text: '更新' },
+  { href: '/#try', text: '试一试' },
+  { href: '/#features', text: '功能' },
+  { href: '/#pinyin', text: '拼音反查' },
+  { href: '/#define', text: '造词' },
+  { href: '/#keys', text: '键位' },
+  { href: '/#faq', text: '常见问题' },
+  { href: '/#changelog', text: '更新' },
 ];
 ---
 <header>
   <div class="wrap bar">
-    <a href="#top" class="brand">
+    <a href="/" class="brand">
       <span aria-hidden="true" class="serif mark">末</span>
       <span class="serif name">末笔</span>
     </a>
     <nav aria-label="主导航">
       {links.map((link) => <a href={link.href}>{link.text}</a>)}
-      <a href="#download" class="cta">下载</a>
+      <a href="/#download" class="cta">下载</a>
     </nav>
   </div>
 </header>

@@ -2,7 +2,7 @@
 
 # 末笔
 
-末笔（Mobi）是一款只做五笔 86 的 macOS 输入法，用 Swift 和 InputMethodKit 写成。不联网，没有账号，所有记录都留在你自己的电脑上。
+末笔（Mobi）是一款只做五笔 86 的 macOS 输入法，用 Swift 和 InputMethodKit 写成。除了检查更新不联网，没有账号，所有记录都留在你自己的电脑上。
 
 仓库里还有它的官网（`site/`），官网上有一个网页版，可以不安装先试打：<https://wubi.app/#try>
 

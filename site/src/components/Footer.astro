@@ -3,14 +3,23 @@ import { site } from '../site';
 ---
 <footer>
   <div class="wrap row">
-    <span>{site.name} · {site.domain}</span>
-    <span>五笔 86 码表来自 rime-wubi（LGPL-3.0），新词来自 rime-wubi86-jidian（Apache-2.0）和 THUOCL（MIT）</span>
-    <a href={site.repo}>GitHub</a>
-    <a href={`mailto:${site.contact}`}>{site.contact}</a>
+    <div class="meta">
+      <span>{site.name} · {site.domain}</span>
+      <span>五笔 86 码表来自 rime-wubi（LGPL-3.0），新词来自 rime-wubi86-jidian（Apache-2.0）和 THUOCL（MIT）</span>
+    </div>
+    <nav aria-label="页脚" class="links">
+      <a href="/privacy">隐私政策</a>
+      <a href="/terms">使用条款</a>
+      <a href={site.repo}>GitHub</a>
+      <a href={`mailto:${site.contact}`}>{site.contact}</a>
+    </nav>
   </div>
 </footer>
 
 <style>
-  .row { padding-top: 36px; padding-bottom: 36px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 32px; font-size: 14px; color: var(--sub); }
+  footer { border-top: 1px solid var(--line); }
+  .row { padding-top: 36px; padding-bottom: 36px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 16px 48px; font-size: 14px; color: var(--sub); }
+  .meta { flex: 1 1 24em; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 24px; }
   a { color: inherit; }
 </style>

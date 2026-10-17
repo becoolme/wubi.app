@@ -7,8 +7,8 @@
     <div class="cols">
       <div>
         <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"></path><path d="M5.6 5.6l12.8 12.8"></path></svg>
-        <h3>不联网</h3>
-        <p>末笔不发起任何网络请求，没有云候选，也没有统计上报。</p>
+        <h3>只为检查更新联网</h3>
+        <p>没有云候选，也没有统计上报。唯一的网络请求是检查更新，不带你打的字，设置里可以关掉。</p>
       </div>
       <div>
         <svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#1D1D1F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H4z"></path><path d="M9 20h6"></path><path d="M12 16v4"></path></svg>
@@ -21,6 +21,7 @@
         <p>内置码表来自开源的 rime-wubi，并补入了 rime-wubi86-jidian、THUOCL 和末笔自己收集的新词。想用自己的码表，把文件放进指定文件夹就会替换。</p>
       </div>
     </div>
+    <p class="more"><a href="/privacy">阅读完整的隐私政策 →</a></p>
   </div>
 </section>
 
@@ -31,6 +32,8 @@
   .cols > div:first-child { padding-left: 0; border-left: 0; }
   h3 { font-size: 19px; font-weight: 700; }
   p { color: var(--sub); }
+  .more { margin-top: 44px; font-size: 15px; }
+  .more a { color: var(--ac); }
   @media (max-width: 860px) {
     .cols { grid-template-columns: minmax(0, 1fr); }
     .cols > div { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--line); margin-top: 24px; }
