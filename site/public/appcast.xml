@@ -6,6 +6,15 @@
         <language>zh-CN</language>
         <!-- releases -->
         <item>
+            <title>0.1.5</title>
+            <pubDate>Sat, 17 Oct 2026 18:47:40 +0000</pubDate>
+            <sparkle:version>13</sparkle:version>
+            <sparkle:shortVersionString>0.1.5</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
+            <description><![CDATA[<ul><li>码表补进约 6000 个新词，比如微信、迭代、支付宝、人工智能、机器学习、躺平。新词取自 rime-wubi86-jidian 和清华大学开放中文词库，编码按五笔规则计算，和自己造词一致。</li><li>新版已在后台下载好时，输入法菜单和设置里会出现「立即更新」，不用等到不打字时再换上。</li><li>设置里新增「关于」页，列出末笔用到的开源项目。</li></ul>]]></description>
+            <enclosure url="https://github.com/becoolme/wubi.app/releases/download/v0.1.5/Mobi-0.1.5.zip" sparkle:edSignature="g2zVRCidykugvitWmIaXB7MfjsmW0JLL/rm1f/ccuiUFGBfJgMKD1rscuu3J+NhaWvUVrPxVinXtIxVcXL+UDg==" length="2421444" type="application/octet-stream"/>
+        </item>
+        <item>
             <title>0.1.4</title>
             <pubDate>Sat, 17 Oct 2026 18:19:09 +0000</pubDate>
             <sparkle:version>12</sparkle:version>

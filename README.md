@@ -71,7 +71,8 @@ Sources/Mobi       输入法本体：InputMethodKit 控制器、候选窗、设�
 Tests              MobiCore 的单元测试
 Resources          Info.plist 和内置码表
 scripts            构建、安装、图标与码表转换脚本
-vendor/rime-wubi   码表来源及其许可证
+data/new-words.txt 末笔自己收的新词，一行一个，不用写编码
+vendor             码表来源及其许可证：rime-wubi、rime-wubi86-jidian、THUOCL
 site               官网（Astro）
 ```
 
@@ -95,10 +96,14 @@ xcrun notarytool store-credentials mobi-notary --apple-id <Apple ID> --team-id 7
 swift test
 ```
 
-重新从 rime-wubi 生成码表：
+重新生成码表：以 rime-wubi 为底，再补入它没有的新词，依次来自 `data/new-words.txt`、THUOCL 的 IT 和财经词表（出现次数 3000 以上）、rime-wubi86-jidian。新词按五笔规则从单字编码算出编码，和造词的编码一致。发现缺词，加到 `data/new-words.txt` 再重新生成：
 
 ```bash
-python3 scripts/import_rime.py vendor/rime-wubi/wubi86.dict.yaml Resources/wubi86.txt
+python3 scripts/import_rime.py vendor/rime-wubi/wubi86.dict.yaml Resources/wubi86.txt --min-count 3000 \
+  --words data/new-words.txt \
+  --words vendor/thuocl/THUOCL_IT.txt --words vendor/thuocl/THUOCL_caijing.txt \
+  --extra vendor/rime-wubi86-jidian/wubi86_jidian.dict.yaml \
+  --extra vendor/rime-wubi86-jidian/wubi86_jidian_extra.dict.yaml
 ```
 
 重新生成官网的 favicon 和 banner（也就是本页顶部那张图）：
@@ -135,4 +140,4 @@ npm --prefix site run deploy
 
 代码以 [MIT](LICENSE) 许可发布。
 
-五笔 86 码表来自 [rime-wubi](https://github.com/rime/rime-wubi)，仍以 LGPL-3.0 许可，见 [vendor/rime-wubi/LICENSE](vendor/rime-wubi/LICENSE)。
+五笔 86 码表来自 [rime-wubi](https://github.com/rime/rime-wubi)，仍以 LGPL-3.0 许可，见 [vendor/rime-wubi/LICENSE](vendor/rime-wubi/LICENSE)。新词取自 [rime-wubi86-jidian](https://github.com/KyleBing/rime-wubi86-jidian)，以 Apache-2.0 许可，见 [vendor/rime-wubi86-jidian/LICENSE](vendor/rime-wubi86-jidian/LICENSE)；以及清华大学的 [THUOCL](https://github.com/thunlp/THUOCL)，以 MIT 许可，见 [vendor/thuocl/LICENSE](vendor/thuocl/LICENSE)。

@@ -1,6 +1,15 @@
 // What changed in each release, newest first. The GitHub release notes use the same words.
 export const changelog = [
   {
+    version: '0.1.5',
+    date: '2026-10-17',
+    changes: [
+      '码表补进约 6000 个新词，比如微信、迭代、支付宝、人工智能、机器学习、躺平。新词取自 rime-wubi86-jidian 和清华大学开放中文词库，编码按五笔规则计算，和自己造词一致。',
+      '新版已在后台下载好时，输入法菜单和设置里会出现「立即更新」，不用等到不打字时再换上。',
+      '设置里新增「关于」页，列出末笔用到的开源项目。',
+    ],
+  },
+  {
     version: '0.1.4',
     date: '2026-10-17',
     changes: [

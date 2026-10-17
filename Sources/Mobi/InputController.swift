@@ -286,6 +286,11 @@ final class MobiInputController: IMKInputController {
         let item = NSMenuItem(title: "设置…", action: #selector(openSettings(_:)), keyEquivalent: "")
         item.target = self
         menu.addItem(item)
+        if let ready = Updater.shared.ready {
+            let install = NSMenuItem(title: "立即更新到 \(ready)", action: #selector(installUpdate(_:)), keyEquivalent: "")
+            install.target = self
+            menu.addItem(install)
+        }
         let update = NSMenuItem(title: "检查更新…", action: #selector(checkForUpdates(_:)), keyEquivalent: "")
         update.target = self
         menu.addItem(update)
@@ -300,5 +305,9 @@ final class MobiInputController: IMKInputController {
 
     @objc private func checkForUpdates(_ sender: Any?) {
         Updater.shared.check()
+    }
+
+    @objc private func installUpdate(_ sender: Any?) {
+        Updater.shared.installNow()
     }
 }

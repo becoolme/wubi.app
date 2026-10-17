@@ -11,7 +11,11 @@ enum InputSources {
         guard let bundleID = Bundle.main.bundleIdentifier,
               let modes = Bundle.main.infoDictionary?["ComponentInputModeDict"] as? [String: Any],
               let modeID = (modes["tsVisibleInputModeOrderedArrayKey"] as? [String])?.first else { return }
-        TISRegisterInputSource(Bundle.main.bundleURL as CFURL)
+        // Only when the system has yet to learn of the mode: registering again while Mobi is in
+        // use can leave the input menu in the menu bar empty until Mobi is removed and added back.
+        if source(modeID, enabledOnly: false) == nil {
+            TISRegisterInputSource(Bundle.main.bundleURL as CFURL)
+        }
         if savedWithoutMode(bundleID: bundleID, modeID: modeID) { askToAddAgain() }
         // A Mac that never had Mobi enabled, or turned it off, is left alone.
         guard source(bundleID, enabledOnly: true) != nil, source(modeID, enabledOnly: true) == nil else { return }

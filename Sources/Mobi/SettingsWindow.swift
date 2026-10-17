@@ -36,13 +36,14 @@ final class SettingsWindow {
 }
 
 private enum Pane: String, CaseIterable, Identifiable {
-    case general, words, appearance
+    case general, words, appearance, about
     var id: String { rawValue }
     var title: String {
         switch self {
         case .general: return "通用"
         case .words: return "用户词库"
         case .appearance: return "外观"
+        case .about: return "关于"
         }
     }
     var symbol: String {
@@ -50,6 +51,7 @@ private enum Pane: String, CaseIterable, Identifiable {
         case .general: return "slider.horizontal.3"
         case .words: return "text.book.closed"
         case .appearance: return "circle.lefthalf.filled"
+        case .about: return "info.circle"
         }
     }
 }
@@ -71,6 +73,7 @@ private struct SettingsView: View {
                 switch pane {
                 case .appearance: appearance
                 case .words: UserWordsPane()
+                case .about: AboutPane()
                 default: general
                 }
             }
@@ -162,10 +165,18 @@ private struct SettingsView: View {
                     }
                 }
                 LabeledContent {
-                    Button("检查更新…") { updater.check() }
+                    if let ready = updater.ready {
+                        Button("立即更新到 \(ready)") { updater.installNow() }
+                    } else {
+                        Button("检查更新…") { updater.check() }
+                    }
                 } label: {
                     Text("当前版本")
-                    Text(updater.version)
+                    if let ready = updater.ready {
+                        Text("\(updater.version)，\(ready) 已下载好，不打字时会自动换上")
+                    } else {
+                        Text(updater.version)
+                    }
                 }
             }
         }
@@ -211,6 +222,53 @@ private struct SettingsView: View {
                     }
                 }
                 Stepper("每页候选数　\(settings.pageSize)", value: $settings.pageSize, in: 3...9)
+            }
+        }
+    }
+}
+
+/// What Mobi is built on, with where each comes from and the license it is used under.
+private struct Credit: Identifiable {
+    let name: String
+    let use: String
+    let license: String
+    let url: String
+    var id: String { name }
+
+    static let all = [
+        Credit(name: "rime-wubi", use: "五笔 86 码表", license: "LGPL-3.0", url: "https://github.com/rime/rime-wubi"),
+        Credit(name: "rime-wubi86-jidian", use: "补充的新词", license: "Apache-2.0", url: "https://github.com/KyleBing/rime-wubi86-jidian"),
+        Credit(name: "THUOCL 清华大学开放中文词库", use: "补充的 IT 和财经词汇", license: "MIT", url: "https://github.com/thunlp/THUOCL"),
+        Credit(name: "Sparkle", use: "自动更新", license: "MIT", url: "https://github.com/sparkle-project/Sparkle"),
+    ]
+}
+
+private struct AboutPane: View {
+    var body: some View {
+        Form {
+            Section {
+                LabeledContent("版本", value: Updater.shared.version)
+                LabeledContent("官网") { Link("wubi.app", destination: URL(string: "https://wubi.app")!) }
+                LabeledContent("源代码") {
+                    Link("GitHub · MIT 许可", destination: URL(string: "https://github.com/becoolme/wubi.app")!)
+                }
+                LabeledContent("反馈") { Link("hi@wubi.app", destination: URL(string: "mailto:hi@wubi.app")!) }
+            }
+            Section {
+                ForEach(Credit.all) { credit in
+                    LabeledContent {
+                        Link(credit.license, destination: URL(string: credit.url)!)
+                    } label: {
+                        Text(credit.name)
+                        Text(credit.use)
+                    }
+                }
+            } header: {
+                Text("致谢")
+            } footer: {
+                Text("末笔用到了这些开源项目，感谢它们的作者。拼音反查用的是 macOS 自带的汉字转拼音。")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
             }
         }
     }

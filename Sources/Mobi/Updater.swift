@@ -15,6 +15,8 @@ final class Updater: NSObject, ObservableObject, SPUUpdaterDelegate, SPUStandard
     /// What to tell the user the first time they type after Mobi came back as a new version.
     private var notice: String?
     private var timer: Timer?
+    /// The version downloaded and waiting to go in, for the menu and settings to offer.
+    @Published private(set) var ready: String?
 
     /// How long the keyboard has to be quiet before Mobi restarts into a new version.
     private static let quiet: TimeInterval = 120
@@ -71,8 +73,15 @@ final class Updater: NSObject, ObservableObject, SPUUpdaterDelegate, SPUStandard
         alert.informativeText = Self.plainText(item.itemDescription) ?? ""
         alert.addButton(withTitle: "现在更新")
         alert.addButton(withTitle: "稍后")
-        guard alert.runModal() == .alertFirstButtonReturn, let install = pending else { return }
+        guard alert.runModal() == .alertFirstButtonReturn else { return }
+        installNow()
+    }
+
+    /// Puts the downloaded version in place and restarts Mobi into it.
+    func installNow() {
+        guard let install = pending else { return }
         pending = nil
+        ready = nil
         timer?.invalidate()
         install()
     }
@@ -106,6 +115,7 @@ final class Updater: NSObject, ObservableObject, SPUUpdaterDelegate, SPUStandard
                  immediateInstallationBlock: @escaping () -> Void) -> Bool {
         pending = immediateInstallationBlock
         pendingItem = item
+        ready = item.displayVersionString
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
             self?.installIfQuiet()
@@ -114,11 +124,9 @@ final class Updater: NSObject, ObservableObject, SPUUpdaterDelegate, SPUStandard
     }
 
     private func installIfQuiet() {
-        guard let install = pending, Date().timeIntervalSince(lastKey) > Self.quiet else { return }
-        pending = nil
-        timer?.invalidate()
+        guard pending != nil, Date().timeIntervalSince(lastKey) > Self.quiet else { return }
         NSLog("Mobi: installing the downloaded update")
-        install()
+        installNow()
     }
 
     // MARK: SPUStandardUserDriverDelegate
